@@ -78,6 +78,7 @@ func (e *ethminerExporter) Collect(ch chan<- prometheus.Metric) {
 	conn, err := net.Dial("tcp", e.target)
 	if err != nil {
 		log.Errorln(err)
+		ch <- prometheus.NewInvalidMetric(prometheus.NewDesc("connection_error", "Error connecting to target", nil, nil), err)
 		return
 	}
 	defer conn.Close()
